@@ -47,7 +47,7 @@ class DI
 
         $object = $objectInfo['object'];
         if (is_callable($object)) {
-            $object = call_user_func_array($object, [$this]);
+            $object = call_user_func_array($object, array($this));
             if ($this->isShared($key)) {
                 $this->objects[$key]['shared_object'] = $object;
             }
