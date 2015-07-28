@@ -1,0 +1,22 @@
+{
+  "name": "omerucel/di",
+  "type": "library",
+  "homepage": "https://github.com/omerucel/di",
+  "keywords": ["di", "php"],
+  "licence": "MIT",
+  "authors": [
+    {
+      "name": "Ömer ÜCEL",
+      "email": "omerucel@gmail.com"
+    }
+  ],
+  "require-dev": {
+    "phpunit/phpunit": "4.0.14",
+    "phpunit/php-code-coverage": "2.0.5"
+  },
+  "autoload": {
+    "psr-0": {
+      "OU": "src/"
+    }
+  }
+}
