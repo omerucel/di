@@ -12,10 +12,10 @@ class DI
      */
     public function setShared($key, $object)
     {
-        $this->objects[$key] = [
+        $this->objects[$key] = array(
             'is_shared' => true,
             'object' => $object
-        ];
+        );
     }
 
     /**
@@ -24,9 +24,9 @@ class DI
      */
     public function set($key, $object)
     {
-        $this->objects[$key] = [
+        $this->objects[$key] = array(
             'object' => $object
-        ];
+        );
     }
 
     /**
