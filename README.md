@@ -1,3 +1,5 @@
+[![Build Status](https://secure.travis-ci.org/omerucel/di.png)](http://travis-ci.org/omerucel/di)
+
 # About
 
 A simple DI class.
