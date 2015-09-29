@@ -9,7 +9,7 @@ A simple DI class.
 ```yaml
 {
     "require": {
-        "omerucel/di": "*"
+        "omerucel/di": "dev-master"
     }
 }
 ```
