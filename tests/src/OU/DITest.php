@@ -58,4 +58,19 @@ class DITest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($di->get('date'), $di->get('date'));
         $this->assertNotEquals($di->get('date'), $di->get('date', true));
     }
+
+    public function testSharedServiceReloadShared()
+    {
+        $di = new DI();
+        $di->setSharedService('fake_service', 'OU\UniqidService');
+        $this->assertEquals($di->get('fake_service'), $di->get('fake_service'));
+        $this->assertNotEquals($di->get('fake_service'), $di->get('fake_service', true));
+    }
+
+    public function testService()
+    {
+        $di = new DI();
+        $di->setService('fake_service', 'OU\UniqidService');
+        $this->assertNotEquals($di->get('fake_service'), $di->get('fake_service'));
+    }
 }

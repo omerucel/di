@@ -18,6 +18,14 @@ class DI
         );
     }
 
+    public function setSharedService($key, $class)
+    {
+        $this->objects[$key] = array(
+            'is_shared' => true,
+            'class' => $class
+        );
+    }
+
     /**
      * @param $key
      * @param $object
@@ -26,6 +34,17 @@ class DI
     {
         $this->objects[$key] = array(
             'object' => $object
+        );
+    }
+
+    /**
+     * @param $key
+     * @param $class
+     */
+    public function setService($key, $class)
+    {
+        $this->objects[$key] = array(
+            'class' => $class
         );
     }
 
@@ -45,12 +64,22 @@ class DI
             return $objectInfo['shared_object'];
         }
 
-        $object = $objectInfo['object'];
-        if (is_callable($object)) {
-            $object = call_user_func_array($object, array($this));
-            if ($this->isShared($key)) {
-                $this->objects[$key]['shared_object'] = $object;
+        if (isset($objectInfo['class'])) {
+            /**
+             * @var Service $service
+             */
+            $class = $objectInfo['class'];
+            $service = new $class();
+            $object = $service->getService($this);
+            $this->objects[$key]['object'] = $object;
+        } else {
+            $object = $objectInfo['object'];
+            if (is_callable($object)) {
+                $object = call_user_func_array($object, array($this));
             }
+        }
+        if ($this->isShared($key)) {
+            $this->objects[$key]['shared_object'] = $object;
         }
         return $object;
     }

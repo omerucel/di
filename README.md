@@ -39,3 +39,25 @@ $logger->info('Hello world!');
 // Anonymous function works again for key when second argument is true.
 $di->get('logger', true)->info('Hello world!');
 ```
+
+With Service implementation:
+```php
+<?php
+
+namespace Project\Service;
+
+class ConfigService implementation \OU\DI\Service
+{
+    public function getService(\OU\DI $di)
+    {
+        return new Config(realpath(__DIR__ . '/' . $environment . '.php');
+    }
+}
+```
+
+```php
+<?php
+$di = new OU\DI();
+$di->setSharedService('config', 'Project\Service\ConfigService');
+$config = $di->getShared('config');
+```
