@@ -46,10 +46,11 @@ With Service implementation:
 
 namespace Project\Service;
 
-class ConfigService implementation \OU\DI\Service
+class ConfigService implements \OU\DI\Service
 {
     public function getService(\OU\DI $di)
     {
+        $environment = $di->get('environment');
         return new Config(realpath(__DIR__ . '/' . $environment . '.php');
     }
 }
@@ -58,6 +59,7 @@ class ConfigService implementation \OU\DI\Service
 ```php
 <?php
 $di = new OU\DI();
+$di->setShared('environment', 'development');
 $di->setSharedService('config', 'Project\Service\ConfigService');
 $config = $di->getShared('config');
 ```
