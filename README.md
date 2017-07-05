@@ -35,9 +35,7 @@ $di->setShared('logger', function ($di) {
  */
 $logger = $di->get('logger');
 $logger->info('Hello world!');
-
-// Anonymous function works again for key when second argument is true.
-$di->get('logger', true)->info('Hello world!');
+$di->reloadShared('logger')->info('Hello world!');
 ```
 
 With Service implementation:
@@ -61,5 +59,5 @@ class ConfigService implements \OU\DI\Service
 $di = new OU\DI();
 $di->setShared('environment', 'development');
 $di->setSharedService('config', 'Project\Service\ConfigService');
-$config = $di->getShared('config');
+$config = $di->get('config');
 ```

@@ -28,7 +28,10 @@ class DITest extends \PHPUnit_Framework_TestCase
         });
         $this->assertTrue($di->hasKey('date'));
         $this->assertTrue($di->hasKey('time'));
+        $this->assertTrue($di->has('date'));
+        $this->assertTrue($di->has('time'));
         $this->assertFalse($di->hasKey('a_object'));
+        $this->assertFalse($di->has('a_object'));
     }
 
     public function testKeyNotFound()
@@ -56,7 +59,7 @@ class DITest extends \PHPUnit_Framework_TestCase
         });
 
         $this->assertEquals($di->get('date'), $di->get('date'));
-        $this->assertNotEquals($di->get('date'), $di->get('date', true));
+        $this->assertNotEquals($di->get('date'), $di->reloadShared('date'));
     }
 
     public function testSharedServiceReloadShared()
@@ -64,7 +67,7 @@ class DITest extends \PHPUnit_Framework_TestCase
         $di = new DI();
         $di->setSharedService('fake_service', 'OU\UniqidService');
         $this->assertEquals($di->get('fake_service'), $di->get('fake_service'));
-        $this->assertNotEquals($di->get('fake_service'), $di->get('fake_service', true));
+        $this->assertNotEquals($di->get('fake_service'), $di->reloadShared('fake_service'));
     }
 
     public function testService()

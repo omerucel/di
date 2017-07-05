@@ -2,7 +2,11 @@
 
 namespace OU;
 
-class DI
+use OU\Di\ContainerExceptionImp;
+use OU\Di\NotFoundExceptionImp;
+use Psr\Container\ContainerInterface;
+
+class DI implements ContainerInterface
 {
     protected $objects;
 
@@ -50,20 +54,38 @@ class DI
 
     /**
      * @param $key
-     * @param bool $reloadShared
      * @return mixed
      * @throws \Exception
      */
-    public function get($key, $reloadShared = false)
+    public function get($key)
     {
         if (!isset($this->objects[$key])) {
-            throw new \Exception('Key (' . $key . ') not defined for DI.');
+            throw new NotFoundExceptionImp('Key (' . $key . ') not defined for DI.');
         }
         $objectInfo = $this->objects[$key];
-        if ($reloadShared == false && isset($objectInfo['shared_object'])) {
+        if (isset($objectInfo['shared_object'])) {
             return $objectInfo['shared_object'];
         }
+        return $this->createObject($key);
+    }
 
+    /**
+     * @param $key
+     * @return mixed
+     */
+    public function reloadShared($key)
+    {
+        return $this->createObject($key);
+    }
+
+    /**
+     * @param $key
+     * @return mixed
+     * @throws ContainerExceptionImp
+     */
+    protected function createObject($key)
+    {
+        $objectInfo = $this->objects[$key];
         if (isset($objectInfo['class'])) {
             /**
              * @var Service $service
@@ -75,7 +97,11 @@ class DI
         } else {
             $object = $objectInfo['object'];
             if (is_callable($object)) {
-                $object = call_user_func_array($object, array($this));
+                try {
+                    $object = call_user_func_array($object, array($this));
+                } catch (\Throwable $exception) {
+                    throw new ContainerExceptionImp();
+                }
             }
         }
         if ($this->isShared($key)) {
@@ -91,6 +117,15 @@ class DI
     public function isShared($key)
     {
         return $this->hasKey($key) && isset($this->objects[$key]['is_shared']);
+    }
+
+    /**
+     * @param $key
+     * @return bool
+     */
+    public function has($key)
+    {
+        return $this->hasKey($key);
     }
 
     /**
